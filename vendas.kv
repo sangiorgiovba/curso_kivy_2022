@@ -1,0 +1,226 @@
+#:import hex kivy.utils.get_color_from_hex
+
+<Btn@Button>:
+    background_normal: ''
+    background_color: hex('#393939')
+
+<Btn_verde@Button>:
+    background_normal: ''  
+    background_color: hex('#009900')
+
+<Btn_vermelho@Button>:
+    background_normal: ''  
+    background_color: hex('#FF0000')
+
+<Label_azul@Label>:
+    canvas.before:
+		Color:
+			rgba: hex('#3399FF')
+		Rectangle:
+			size: self.size
+			pos: self.pos
+
+
+<SelectableBoxLayout>:
+    # Draw a background to indicate selection
+    canvas.before:
+        Color:
+            rgba: hex('#C9F3EF') if self.selected else hex('#F0F0F0')
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    Label:
+    	id: _has_cod
+    	size_hint_x: .1
+    	color: (0,0,0,1)
+    Label:
+    	id: _artigo_produto
+    	size_hint_x: .5
+    	color: (0,0,0,1)
+    Label:
+    	id: _quantidade
+    	size_hint_x: .1
+    	color: (0,0,0,1)
+    Label:
+    	id: _preco_por_produto
+    	size_hint_x: .15
+    	color: (0,0,0,1)
+    Label:
+    	id: _preco
+    	size_hint_x: .15
+    	color: (0,0,0,1)
+
+
+<RV>:
+    viewclass: 'SelectableBoxLayout'
+    SelectableRecycleBoxLayout:
+        default_size: None, dp(36)
+        default_size_hint: 1, None
+        size_hint_y: None
+        height: self.minimum_height
+        orientation: 'vertical'
+        multiselect: False
+        touch_multiselect: False
+
+<VendasWindow>:
+	canvas.before:
+		Color:
+			rgba: hex('#BA55D3')
+		Rectangle:
+			size: self.size
+			pos: self.pos
+	orientation: 'vertical'
+	BoxLayout:
+		size_hint_y: .1
+		spacing: .5
+		Label:
+			id: bemvindo_label
+			size_hint_x: .25
+			text: 'Seja Bem Vindos: '
+			color: hex('#FFFFFF')
+		GridLayout:
+			size_hint_x: .25
+			rows: 2
+			cols: 2
+			Label: 
+				text: 'Data: '
+				color: hex('#FFFFFF')
+			Label: 
+				id: data
+				color: hex('#FFFFFF')
+			Label: 
+				text: 'Hora: '
+				color: hex('#FFFFFF')
+			Label: 
+				id: hora
+				color: hex('#FFFFFF')
+		Label: 
+			size_hint_x: .2
+		Btn:
+			id: admin_boton
+			size_hint_x: .15
+			text: 'Administrador'
+			on_release: root.admin()
+		Btn_vermelho: 
+			id: signout_boton
+			size_hint_x: .15
+			text: 'Sair'
+			on_release: root.signout()
+	BoxLayout:
+		canvas.before:
+			Color:
+				rgba: hex('#FFFFFF')
+			Rectangle:
+				size: self.size
+				pos: self.pos
+		size_hint_y: .87
+		spacing: .5
+		BoxLayout:
+			size_hint_x: .7
+			orientation: 'vertical'
+			spacing: .5
+			GridLayout:
+				spacing: .5
+				size_hint_y: .1
+				rows: 2
+				cols: 2
+				Label_azul:
+					text: 'Pesquisar por Código'
+				Label_azul:
+					text: 'Pesquisar por Nome'
+				TextInput:
+					id: pesquisar_codigo
+					multiline: False
+					on_text_validate: root.add_produto_codigo(self.text)
+				TextInput:
+					id: pesquisar_nome
+					multiline: False
+					on_text_validate: root.add_produto_nome(self.text)
+
+			BoxLayout:
+				size_hint_y: .8
+				orientation: 'vertical'
+				BoxLayout:
+					size_hint_y: .05
+					spacing: .5
+					Label_azul:
+						text: 'Cod'
+						size_hint_x: .1
+					Label_azul:
+						text: 'Produto'
+						size_hint_x: .5
+					Label_azul:
+						text: 'Quantidade'
+						size_hint_x: .2
+					Label_azul:
+						text: 'Preco Cada'
+						size_hint_x: .15
+					Label_azul:
+						text: 'Preco'
+						size_hint_x: .15
+				RV:
+					id: rvs
+			BoxLayout:
+				size_hint_y: .1
+				spacing: .5
+				Btn_vermelho:
+					text: 'Deletar Produto'
+					on_release: root.deletar_produto()
+				Btn_verde:
+					text: 'Atualizar Quantidade'
+					on_release: root.trocar_produco()
+		BoxLayout:
+			size_hint_x: .3
+			orientation: 'vertical'
+			canvas.before:
+				Color:
+					rgba: hex('#BCD3D2')
+				Rectangle:
+					size: self.size
+					pos: self.pos
+			GridLayout:
+				canvas.before:
+					Color:
+						rgba: hex('#000000')
+					Rectangle:
+						size: self.size
+						pos: self.pos
+				size_hint_y: .4
+				rows: 2
+				cols: 2
+				Label:
+					text: 'Sub-Total'
+				Label:
+					id: sub_total
+					text: '0.00'
+				Label: 
+					text: 'Total'
+				Label:
+					id: total
+					text: '0.00'
+			BoxLayout:
+				size_hint_y: .6
+				orientation: 'vertical'
+				spacing: .5
+				Label:
+					id: notificacao_erro
+					size_hint_y: .25
+				Label:
+					id: notificacao_sucesso
+					size_hint_y: .25
+				Btn_verde:
+					size_hint_y: .25
+					id: pagar
+					text: 'Pagar'
+					on_release: root.pagar()
+				Btn_verde:
+					size_hint_y: .25
+					id: nova_compra
+					text: 'Nova Compra'
+					on_release: root.nova_compra()
+	BoxLayout:
+	    size_hint_y: .03
+	    Label: 
+			text: 'Seja Bem Vindos | Curso De Kivy | Todos Direitos Reservados :'
+			
+		
